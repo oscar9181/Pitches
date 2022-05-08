@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% block content %}
+        {% for pitch in pitches %}
+        <div class="card"  style="width: 40rem;">
+            <div class="card">
+                <div class="card-header">
+                <p>{{pitch.title}}</p>
+                </div>
+                <div class="card-body">
+                <p class="card-text">{{pitch.pitch}}</p>
+                </div>
+                <div class="card-footer">
+                <p>Posted by: {{pitch.author}}</p>
+                </div>
+                <div class="card-footer text-muted">
+                <p>Date Posted: {{pitch.date_posted}}</p>
+                </div>
+                
+            </div>
+    
+        </div>
+        {% endfor %}
+        {% endblock content %}
+   
