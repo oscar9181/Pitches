@@ -1,24 +1,8 @@
-from email.policy import default
-from flask import Flask, render_template,url_for,flash,redirect
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, column
+from flask import render_template, url_for, flash, redirect
+from app.forms import RegistrationForm, LoginForm
+from app import app
+from app.models import User,Post
 
-from forms import  RegistrationForm,LoginForm
-
-app =Flask(__name__)
-app.config['SECRET_KEY'] = 'ac4d969b60'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite///:site.db'
-db = SQLAlchemy(app)
-
-class User(db.model):
-    id = db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(20), unique=True,nullable=False)
-    email = db.Column(db.String(100), unique=True,nullable=False)
-    image_file = db.Column(db.String(20),nullable=False,default='default.jpg')
-    password =  db.Column(db.String(70),nullable=False)
-
-def __repr__(self):
-    return f"User('{self.username}','{self.email}','{self.image_file}')"
 
 pitches = [
    {
@@ -82,8 +66,3 @@ def Login():
             flash('login unsuccessful.please check email and password','danger')
     return render_template('login.html',title='Login',form=form)
    
-
-
-
-if __name__ == '__main__':
-       app.run()
