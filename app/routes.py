@@ -2,8 +2,9 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash,redirect,request
+from requests import session
 from app import app,db,bcrypt
-from app.forms import RegistrationForm, LoginForm,UpdateAccountForm
+from app.forms import RegistrationForm, LoginForm,UpdateAccountForm,PostForm
 from app.models import User, Post
 from flask_login import login_user,current_user,logout_user,login_required
 
@@ -40,6 +41,7 @@ pitches = [
 @app.route('/')
 @app.route('/home')
 def home():    
+    pitches = Post.query.all()
     '''
     View root page function that returns the home page and its data
     '''
@@ -66,6 +68,8 @@ def register():
         return redirect(url_for('Login'))
     return render_template('register.html',title='Register',form=form)
 
+
+
 @app.route('/login',methods=['GET','POST']) 
 def Login(): 
     if current_user.is_authenticated:
@@ -86,6 +90,8 @@ def logout():
     logout_user()
     
     return redirect(url_for('home'))
+      
+      
       
 def save_picture(form_picture):   
     random_hex = secrets.token_hex(8)
@@ -120,5 +126,17 @@ def account():
     image_file = url_for('static',filename='profile_pics/' + current_user.image_file)              
     return render_template('account.html',title='Account',image_file=image_file,form=form)
    
-
+   
+   
+@app.route('/post/new',methods=['GET','POST']) 
+@login_required
+def new_post():
+    form=PostForm()
+    if form.validate_on_submit():
+        post= Post(title=form.title.data, content=form.content.data,author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created','success')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Post',form=form)
 

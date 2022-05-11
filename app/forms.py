@@ -1,9 +1,10 @@
 
+from importlib.resources import contents
 from multiprocessing.spawn import import_main_path
 from flask_wtf import FlaskForm
 from flask_wtf .file import FileField,FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,TextAreaField
 from wtforms.validators import DataRequired,Length,Email,EqualTo,ValidationError
 from app.models import User
 
@@ -65,4 +66,7 @@ class UpdateAccountForm(FlaskForm):
           if user:
             raise ValidationError('The email is already taken ') 
 
-
+class PostForm(FlaskForm):
+   title = StringField('Title', validators=[DataRequired()])
+   content= TextAreaField('Content',validators=[DataRequired()])
+   submit= SubmitField('Post')
