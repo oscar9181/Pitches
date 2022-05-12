@@ -10,6 +10,15 @@ This is a flask app that enable users to  create an account register and login i
    - As a user, I would like to submit a post.
    - As a user, I would like to create an account.
    - AS a user, I would like to delete my post.
+   - As a user, I would like to logout from my account.
+
+
+## Cloning
+
+    In your terminal:
+
+      $ https://github.com/oscar9181/Pitches.git
+      $ cd News
 
 
 
