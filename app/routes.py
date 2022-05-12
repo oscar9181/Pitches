@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash,redirect,request
+from flask import render_template, url_for, flash,redirect,request,abort
 from requests import session
 from app import app,db,bcrypt
 from app.forms import RegistrationForm, LoginForm,UpdateAccountForm,PostForm
@@ -10,42 +10,42 @@ from flask_login import login_user,current_user,logout_user,login_required
 
 
 
-pitches = [
-   {
-    'author' :'Sophie Paxton',
-    'title'  :'Interface Design',
-    'pitch'  :'Animation is like cursing. If you overuse it, it loses all its impact.',
-    'date_posted' : 'October 17 2002'
-   },
-   {
-    'author' :'Jessica Cherner',
-    'title'  :'Architectural Design.',
-    'pitch'  :'On the famed Billionaire Row, SHoP Architects and Studio Sofield have delivered on a long-awaited promise',
-    'date_posted' :'April 11 2022'
-   },
-   {      
-    'author' :'Jeff Bezos',
-    'title'  :'Forbes',
-    'pitch'  :'I have not failed. I have just found 10,000 ways that wil not work.',
-    'date_posted' :'May 11 2008'
-   },
-   {
-    'author' :'Oscar',
-    'title'  :'Advertisement',
-    'pitch'  :'A walk in the moon book ',
-    'date_posted' :'March 13 2010'
-     }
-    ]
+# posts = [
+#    {
+#     'author' :'Sophie Paxton',
+#     'title'  :'Interface Design',
+#     'pitch'  :'Animation is like cursing. If you overuse it, it loses all its impact.',
+#     'date_posted' : 'October 17 2002'
+#    },
+#    {
+#     'author' :'Jessica Cherner',
+#     'title'  :'Architectural Design.',
+#     'pitch'  :'On the famed Billionaire Row, SHoP Architects and Studio Sofield have delivered on a long-awaited promise',
+#     'date_posted' :'April 11 2022'
+#    },
+#    {      
+#     'author' :'Jeff Bezos',
+#     'title'  :'Forbes',
+#     'pitch'  :'I have not failed. I have just found 10,000 ways that wil not work.',
+#     'date_posted' :'May 11 2008'
+#    },
+#    {
+#     'author' :'Oscar',
+#     'title'  :'Advertisement',
+#     'pitch'  :'A walk in the moon book ',
+#     'date_posted' :'March 13 2010'
+#      }
+#     ]
 
 
 @app.route('/')
 @app.route('/home')
 def home():    
-    pitches = Post.query.all()
+    posts = Post.query.all()
     '''
     View root page function that returns the home page and its data
     '''
-    return render_template('home.html',pitches=pitches)
+    return render_template('home.html',posts=posts)
 
 
 @app.route('/about')
@@ -119,7 +119,7 @@ def account():
         current_user.email =form.email.data
         db.session.commit()
         flash('Your account has been created','success')
-        return redirect(url_for('account'))
+        return redirect(url_for('home'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
@@ -138,11 +138,32 @@ def new_post():
         db.session.commit()
         flash('Your post has been created','success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post',form=form)
+    return render_template('create_post.html', title='New Post',form=form,legend='New Post')
 
-
-@app.route("/post/<int:post id>")
+@app.route("/post/<int:post_id>")
 def post(post_id):
-    post: Post.query.get_or_404(post_id)
-    return render_template('post.html',title=post.title,post=post)
+  post = Post.query.get_or_404(post_id)
+
+  return render_template('post.html', title='Post',post=post)
+
+
+@app.route("/post/<int:post_id>/update",methods=['GET','POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_403(post_id)
+    if post.author !=current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated')
+        return redirect(url_for('post',post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',form=form,legend='Update Post')
+
+
 

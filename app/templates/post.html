@@ -1,0 +1,23 @@
+<article class="media content-section">
+    <div class="card"  style="width: 20rem;" >
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="">
+        <div class="card">
+            <div class="card-header">
+            <h2 class="article-title ">{{post.title}}</h2>
+            </div>
+            <div class="card-body">
+            <p class="card-text">{{post.post}}</p>
+            <a class="btm btn-secondary btn-sm mt-1 mb-1" href="{{url_for('update_post',post_id=post.id)}}"></a>
+            </div>
+            <div class="card-footer">
+            <p>Posted by: {{post.author.username}}</p>
+
+            </div>
+            <div class="card-footer text-muted">
+            <small>Date Posted: {{post.date_posted.strftime('%Y-%m-%d')}}</small>
+            </div>
+            
+        </div>
+
+    </div>
+</article>

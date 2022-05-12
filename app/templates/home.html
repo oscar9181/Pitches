@@ -1,22 +1,23 @@
 {% extends 'base.html'%}
 {% block content %}
-        {% for pitch in pitches %}
+        {% for post in posts %}
 
     <article class="media content-section">
         <div class="card"  style="width: 20rem;" >
-        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + pitch.author.image_file) }}" alt="">
+        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="" style="height: 50px;width: 50px;" >
             <div class="card">
                 <div class="card-header">
-                <p>{{pitch.title}}</p>
+                <h2><a class article-title href="{{url_for('post',post_id=post.id)}}">{{post.title}}</a></h2>
                 </div>
                 <div class="card-body">
-                <p class="card-text">{{pitch.pitch}}</p>
+                <p class="card-text">{{post.post}}</p>
                 </div>
                 <div class="card-footer">
-                <p>Posted by: {{pitch.author.username}}</p>
+                <p>Posted by: {{post.author.username}}</p>
+                
                 </div>
                 <div class="card-footer text-muted">
-                <small>Date Posted: {{pitch.date_posted.strftime('%Y-%m-%d')}}</small>
+                <small>Date Posted: {{post.date_posted.strftime('%Y-%m-%d')}}</small>
                 </div>
                 
             </div>
