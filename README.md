@@ -29,14 +29,14 @@ This is a flask app that enable users to  create an account register and login i
 
 
 ## Languages
-    - Python
-    - Powershell
-    - HTML
+   - Python
+   - Powershell
+   - HTML
 
 
 ## Future Goals
-    - A user can be able to like and dislike post.
-    - A user can be able to comment on other post.
+      - A user can be able to like and dislike post.
+      - A user can be able to comment on other post.
 
 # License
  MIT License
