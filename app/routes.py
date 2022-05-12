@@ -2,7 +2,7 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash,redirect,request,abort
-from requests import session
+
 from app import app,db,bcrypt
 from app.forms import RegistrationForm, LoginForm,UpdateAccountForm,PostForm
 from app.models import User, Post
