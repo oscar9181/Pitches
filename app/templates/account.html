@@ -2,6 +2,7 @@
 {% block content %}
     <div class="content-section">
       <div class="media">
+        <div class='d-sm-flex'>
         <img class="rounded-circle account-img" src="{{ image_file }}" style="height: 50px;width: 50px;">
         <div class="media-body">
           <h2 class="account-heading">{{ current_user.username }}</h2>
@@ -66,7 +67,7 @@
         </fieldset>
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info")}}
-
+        </div>
         </div>
     </form>
     </div>
